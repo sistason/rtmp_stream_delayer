@@ -64,7 +64,7 @@ def get_date_from_file(file_):
     """ nginx saves streams as: test-%s.flv """
     try:
         return int(file_.split('-')[-1].split('.')[0])
-    except ValueError
+    except ValueError:
         return 0
 
 if __name__ == '__main__':
