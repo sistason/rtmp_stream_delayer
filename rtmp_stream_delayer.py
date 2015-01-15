@@ -6,9 +6,7 @@ import os, sys
 
 import time
 
-STREAM_DIR = '/tmp/nginx'
-STREAM_DESTINATION = 'rtmp://127.0.0.1:1337/live'
-DELAY = 30
+from delayer_settings import BACKUPSTREAM_SHORT, BACKUPSTREAM_LONG, STREAM_DIR, STREAM_DESTINATION, DELAY
 
 def check_running():
     """ Only one stream at a time """
