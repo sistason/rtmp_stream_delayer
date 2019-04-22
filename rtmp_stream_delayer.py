@@ -6,7 +6,7 @@ import os, sys
 
 import time
 
-from delayer_settings import BACKUPSTREAM_SHORT, BACKUPSTREAM_LONG, STREAM_DIR, STREAM_DESTINATION, DELAY
+from delayer_settings import BACKUPSTREAM_SHORT, BACKUPSTREAM_LONG, STREAM_DIR, STREAM_DESTINATION, DELAY, SINGLE
 
 def check_running():
     """ Only one stream at a time """
@@ -97,7 +97,9 @@ if __name__ == '__main__':
 
         if publish_stream(stream):
             # If the stream is just finished, our work here is done
-            break
+            sys.exit(0)
+        if SINGLE:
+            sys.exit(0)
         
         stream = sorted([_i for _i in os.listdir(STREAM_DIR) if _i.endswith('.flv')])
         first = False
