@@ -138,6 +138,9 @@ if __name__ == '__main__':
         parser = argparse.ArgumentParser()
         parser.add_argument('-v', '--verbose', action="store_true")
         parser.add_argument('-q', '--quiet', action="store_true")
+        parser.add_argument('-w', '--delay', type=int, default=None)
+        parser.add_argument('-s', '--single', action="store_true", default=None)
+        parser.add_argument('-d', '--destination', type=str, default=None)
         parser.add_argument('stream_dir')
 
         _args = parser.parse_args()
@@ -183,8 +186,13 @@ if __name__ == '__main__':
         while True:
             from delayer_settings import BACKUPSTREAM_SHORT, BACKUPSTREAM_LONG, \
                 STREAM_DESTINATION, DELAY, SINGLE, FFMPEG_EXECUTABLE
-            streamer = StreamDelayer(args.stream_dir, STREAM_DESTINATION, BACKUPSTREAM_SHORT, BACKUPSTREAM_LONG,
-                                     delay=DELAY, single=SINGLE, ffmpeg_exe=FFMPEG_EXECUTABLE)
+            destination = args.destination if args.destination is not None  else STREAM_DESTINATION
+            delay = args.delay if args.delay is not None else DELAY
+            single = args.single if args.single is not None else SINGLE
+            print(single)
+
+            streamer = StreamDelayer(args.stream_dir, destination, BACKUPSTREAM_SHORT, BACKUPSTREAM_LONG,
+                                     delay=delay, single=single, ffmpeg_exe=FFMPEG_EXECUTABLE)
             streamer.delay_stream()
 
     except KeyboardInterrupt:
