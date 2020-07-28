@@ -110,15 +110,19 @@ class StreamDelayer:
         Depending on the waiting time, a short outage or 'Problems' or whatever"""
         if wait_time < 10:
             if not self.backupstream_short:
+                logger.debug('Normally publising a short waitstream, but was not configured...')
                 time.sleep(wait_time)
             else:
+                logger.debug('Publishing waitstream short...')
                 subprocess.check_output([self.ffmpeg_exe, '-re',
                                          '-i', self.backupstream_short, '-codec', 'copy', '-f', 'flv',
                                          self.stream_destination])
         else:
             if not self.backupstream_long:
+                logger.debug('Normally publising a long waitstream, but was not configured...')
                 time.sleep(wait_time)
             else:
+                logger.debug('Publishing waitstream long...')
                 subprocess.check_output([self.ffmpeg_exe, '-re',
                                          '-i', self.backupstream_long, '-codec', 'copy', '-f', 'flv',
                                          self.stream_destination])
