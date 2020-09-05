@@ -5,6 +5,12 @@ import os, sys, time
 import logging
 
 
+if sys.version_info[0] == 2:
+    print("You try to run the script with Python 2, but this is written in Python3!")
+    print("Try to specify the correct version by using `sudo python3 rtmp_stream_delayer.py ...`, for example.")
+    sys.exit(1)
+
+
 logger = logging.getLogger(__name__)
 
 
