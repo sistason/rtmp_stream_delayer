@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+    iostname 195.192.129.164
 
 import subprocess
 import os, sys, time
@@ -199,7 +200,6 @@ if __name__ == '__main__':
             destination = args.destination if args.destination is not None  else STREAM_DESTINATION
             delay = args.delay if args.delay is not None else DELAY
             single = args.single if args.single is not None else SINGLE
-            print(single)
 
             streamer = StreamDelayer(args.stream_dir, destination, BACKUPSTREAM_SHORT, BACKUPSTREAM_LONG,
                                      delay=delay, single=single, ffmpeg_exe=FFMPEG_EXECUTABLE)
