@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-    iostname 195.192.129.164
 
 import subprocess
 import os, sys, time
