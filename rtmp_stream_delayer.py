@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 class StreamDelayer:
     def __init__(self, stream_directory, stream_destination, backupstream_short, backupstream_long,
-                 delay=300, single=False, ffmpeg_exe="ffmpeg"):
+                 delay=300, single=False, ffmpeg_exe="ffmpeg", ffmpeg_opts=None):
         self.stream_directory = stream_directory
 
         self.stream_destination = stream_destination
@@ -25,6 +25,7 @@ class StreamDelayer:
         self.delay = delay
         self.single = single
         self.ffmpeg_exe = ffmpeg_exe
+        self.ffmpeg_opts = ffmpeg_opts if ffmpeg_opts is not None else []
 
         self.stream = self._wait_for_stream()
 
@@ -99,7 +100,7 @@ class StreamDelayer:
         return_code = True
         try:
             subprocess.check_output(
-                [self.ffmpeg_exe, '-re', '-i', self.stream, '-codec', 'copy', '-f', 'flv', self.stream_destination])
+                [self.ffmpeg_exe] + self.ffmpeg_opts + ['-re', '-i', self.stream, '-codec', 'copy', '-f', 'flv', self.stream_destination])
         except Exception as e:
             logger.error('Publish stream threw exception {}'.format(e))
             return_code = False
@@ -120,7 +121,7 @@ class StreamDelayer:
                 time.sleep(wait_time)
             else:
                 logger.debug('Publishing waitstream short...')
-                subprocess.check_output([self.ffmpeg_exe, '-re',
+                subprocess.check_output([self.ffmpeg_exe] + self.ffmpeg_opts + ['-re',
                                          '-i', self.backupstream_short, '-codec', 'copy', '-f', 'flv',
                                          self.stream_destination])
         else:
@@ -129,7 +130,7 @@ class StreamDelayer:
                 time.sleep(wait_time)
             else:
                 logger.debug('Publishing waitstream long...')
-                subprocess.check_output([self.ffmpeg_exe, '-re',
+                subprocess.check_output([self.ffmpeg_exe] + self.ffmpeg_opts + ['-re',
                                          '-i', self.backupstream_long, '-codec', 'copy', '-f', 'flv',
                                          self.stream_destination])
 
@@ -195,13 +196,14 @@ if __name__ == '__main__':
     try:
         while True:
             from delayer_settings import BACKUPSTREAM_SHORT, BACKUPSTREAM_LONG, \
-                STREAM_DESTINATION, DELAY, SINGLE, FFMPEG_EXECUTABLE
+                STREAM_DESTINATION, DELAY, SINGLE, FFMPEG_EXECUTABLE, FFMPEG_EXTRA_OPTS
             destination = args.destination if args.destination is not None  else STREAM_DESTINATION
             delay = args.delay if args.delay is not None else DELAY
             single = args.single if args.single is not None else SINGLE
 
             streamer = StreamDelayer(args.stream_dir, destination, BACKUPSTREAM_SHORT, BACKUPSTREAM_LONG,
-                                     delay=delay, single=single, ffmpeg_exe=FFMPEG_EXECUTABLE)
+                                     delay=delay, single=single, ffmpeg_exe=FFMPEG_EXECUTABLE,
+                                     ffmpeg_opts=FFMPEG_EXTRA_OPTS)
             streamer.delay_stream()
 
     except KeyboardInterrupt:

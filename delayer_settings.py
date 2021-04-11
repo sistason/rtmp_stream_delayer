@@ -4,3 +4,4 @@ SINGLE = False  # Set to true to just delay a single stream and exit, no reconne
 BACKUPSTREAM_SHORT = '' # Show while intermission
 BACKUPSTREAM_LONG = ''  # Show while longer downtime
 FFMPEG_EXECUTABLE = "ffmpeg"   # Use avconv if you need
+FFMPEG_EXTRA_OPTS = []  # Add extra options if necessary
