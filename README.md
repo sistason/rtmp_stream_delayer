@@ -13,6 +13,10 @@ When delaying the stream at a server (with hopefully better stability), the down
 
 The setup is based on nginx, although other rtmp-streaming(/multiplexing)-software could also work, if you configure it right.
 
+## Alternative
+
+@invisan also coded something like this, but more recently. Check out their work if you have problems with this one or need the features they provide: [https://github.com/invisan/rtmpdelayer](https://github.com/invisan/rtmpdelayer)
+
 # Installation
 
 - Python
